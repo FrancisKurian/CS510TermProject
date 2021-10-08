@@ -19,7 +19,7 @@ df_forex <- read.csv(ForexFile, skip = 6, header = F) #data begins at row #7
 colnames(df_forex) <- headers #apply headers 
 df_forex$period <- as.Date(df_forex$`Time Period`) #format as date
 
-df_forex$USDxINR <- as.numeric(gsub("ND","",df_forex$RXI_N.B.IN)) #remove special characters and format as number
+df_forex$USDxINR <- as.numeric(gsub("ND","",df_forex$RXI_N.B.IN)) ##clean & format as number
 df_forex$USDxEUR <- as.numeric(gsub("ND","",df_forex$`RXI$US_N.B.EU`))
 df_forex$USDxYEN <- as.numeric(gsub("ND","",df_forex$RXI_N.B.JA))
 
@@ -29,8 +29,6 @@ df_forex <- df_forex[!duplicated(df_forex$period),] # remove duplicates
 sapply(df_forex, class)
 head(df_forex)
 summary(df_forex)
-
-
 
 
 
@@ -78,8 +76,7 @@ for (i in df_companies$ticker) {
     
   }else {
     df_bsi_all <- df_bsi}
-  
-  
+
 }
 
 ggplot(data = df_c_all, aes(period, Close)) +
