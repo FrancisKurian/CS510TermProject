@@ -13,3 +13,10 @@ Primary objective is to develop an analysis system using various R libraries. Ex
 2. Run the code data_analysis.R (/src)
 3. Pdf documentation: "docs/MidTermProject_RMarkdown.pdf"
 4. R Markdown :"docs/MidTermProject_RMarkdown.rmd"
+
+## To repeat the analysis for various companies
+Modify the arguments(company)to function, fn.regress(company,var.Y,var.X)
+Data for 6 companies below are available. 
+GE,BA,F,FE,KHC,OXY
+
+For example, fn.regress("F", "Stock.Price","bsi_score") will conduct the analysis for Ford. 
