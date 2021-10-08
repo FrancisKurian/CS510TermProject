@@ -4,48 +4,36 @@ library(plyr)
 library(lubridate)
 library(scales)
 library(reshape2)
-library(summarytools)
+library(summarytools) #dataframe summaries
 library(ggfortify) #autoplot
 library(sjPlot) #tabmodel
 
 
 CompanyNames <- './data/CompanyNames.csv'
+df_companies <- read.csv(CompanyNames, header = T)
+head(df_companies)
+
 ForexFile <- './data/FederalReserve_CurrencyXchangeRate.csv'
+headers <- read.csv(ForexFile, skip = 5 , header = F, nrows = 1) #header info is at row #6
+df_forex <- read.csv(ForexFile, skip = 6, header = F) #data begins at row #7 
+colnames(df_forex) <- headers #apply headers 
+df_forex$period <- as.Date(df_forex$`Time Period`) #format as date
 
-BizSentimentIndexFile <- './data/Boeing.csv'
-
-
-headers = read.csv(ForexFile, skip = 5 , header = F, nrows = 1)
-head(headers)
-df_forex = read.csv(ForexFile, skip = 6, header = F)
-colnames(df_forex)= headers
-
-#convert Time Period char field to date to merge with other daily data files
-
-df_forex$period <- as.Date(df_forex$`Time Period`)
-
-# convert char fields into numbers
-
-df_forex$USDxINR <- as.numeric(gsub("ND","",df_forex$RXI_N.B.IN))
+df_forex$USDxINR <- as.numeric(gsub("ND","",df_forex$RXI_N.B.IN)) #remove special characters and format as number
 df_forex$USDxEUR <- as.numeric(gsub("ND","",df_forex$`RXI$US_N.B.EU`))
 df_forex$USDxYEN <- as.numeric(gsub("ND","",df_forex$RXI_N.B.JA))
 
 df_forex <- subset(df_forex,select = c(period, USDxINR, USDxEUR, USDxYEN))
+df_forex <- df_forex[!duplicated(df_forex$period),] # remove duplicates
 
-# sort and remove any duplicate daily data points
-
-df_forex <- df_forex[!duplicated(df_forex$period),]
 sapply(df_forex, class)
 head(df_forex)
 summary(df_forex)
 
 
-#process company level data and plot series to figure out any data issues
-df_companies = read.csv(CompanyNames, header = T)
-head(df_companies)
 
-#rm(df_c_all)
-#rm(df_bsi_all)
+
+
 
 for (i in df_companies$ticker) {
   #process stock price/volume files from data directory
