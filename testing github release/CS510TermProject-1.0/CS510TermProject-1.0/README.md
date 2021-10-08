@@ -9,9 +9,10 @@ Stock market behavior is a well researched area with plenty of historic informat
 Primary objective is to develop an analysis system using various R libraries. Extracting and processing data from multiple sources, data cleaning, simplifying repetitive tasks using control structures and functions, use of data visualization techniques and application of statistical methods  are the focus areas while building the framework in R. In other words, learn to write reproducible R code while analyzing stock price movement with respect to Business Sentiment Index(BSI) and Foreign Exchange Rate is the objective of this project.
 
 ## To run the analysis
-1. Download "CS510TermProject-1.0"" from github and extract to local folder.
-2. Rstudio: File/Open File: "./docs/MidTermProject_RMarkdown.Rmd" OR Run R file : "./src/data_analysis.R"
-3. Pdf documentation: "./docs/MidTermProject_RMarkdown.pdf"
+1. Open the R Project (CS510TermProject.Rproj).
+2. Run the code data_analysis.R (/src)
+3. Pdf documentation: "docs/MidTermProject_RMarkdown.pdf"
+4. R Markdown :"docs/MidTermProject_RMarkdown.rmd"
 
 ## To repeat the analysis for various companies
 Modify the arguments(company)to function, fn.regress(company,var.Y,var.X)
