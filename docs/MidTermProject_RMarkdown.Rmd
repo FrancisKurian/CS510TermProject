@@ -5,31 +5,50 @@ date: "10/7/2021"
 output: pdf_document
 ---
 \section*{Introduction}
-Stock market behavior is a well researched area due to the free availability of historic information. Several studies link the stock price movement to the sentiments of the market participants. Sentiments are usually formed by relevant economic events specific to the companies. IBM Watson APIs enables tracking of company specific news and social media platforms through extensive text mining and help come out with a Sentiment Index (Negative and positive emotions expressed through text) for a business.  Business Sentiment Index is one such index calculated by Menerva Fintech that quantifies market sentiment for a company . In addition, to understand  sensitivity of stock prices to Global events,  Foreign Exchanges Rate is also introduced as an additional measure.  Idea here is to demonstrate how to extract various relevant data elements from diverse sources, transform and load them into an analytic framework to visualize the relationship.   
+Stock market behavior is a well researched area due to the free availability of historic information. Several studies link the stock price movement to the sentiments of the market participants. Sentiments are usually formed by relevant economic events specific to the companies. IBM Watson APIs enables tracking of company specific news and social media platforms through extensive text mining and help come out with a Sentiment Index (Negative and positive emotions expressed through text) for a business.  Business Sentiment Index is one such index calculated by TRaiCE Fintech that quantifies market sentiment for a company . In addition, to understand  sensitivity of stock prices to Global events,  Foreign Exchanges Rate is also introduced as an additional measure.  Idea here is to demonstrate how to extract various relevant data elements from diverse sources, transform and load them into an analytic framework to visualize the relationship.   
 
 \section*{Purpose}
 Primary objective is to develop an analysis system using various R libraries. Extracting and processing data from multiple sources, data cleaning, simplifying repetitive tasks using control structures and functions, use of data visualization techniques and application of statistical methods  are the focus areas while building the framework in R. In other words, learn to write reproducible R code while analyzing stock price movement with respect to Business Sentiment Index(BSI) and Foreign Exchange Rate is the purpose of this project.
 
-The program is run by calling the following code.
-```{r setup, echo=TRUE,message=FALSE,warning=FALSE,results=TRUE}
-source("./code/Mid Term Project Code1.R")
+\section*{Important Libraries}
+For this project the following Libraries are used for data validation, graphics and statistical analysis
+
+```{r libraries, echo=TRUE,message=FALSE,warning=FALSE,results=FALSE}
+library(ggplot2) 
+library(tidyr)
+library(plyr)
+library(lubridate)
+library(scales)
+library(reshape2)
+library(summarytools) #dataframe summaries
+library(ggfortify) #autoplot
+library(sjPlot) #tabmodel
 ```
 
+\section*{Data sources, Extraction and Cleaning}
+\subsection{Data files(.csv)used, Description and source}
+### 1.Daily Stock Prices: https://finance.yahoo.com 
+### 2.Foreign Exchange daily data for various currencies: https://www.federalreserve.gov 
+### 3.Business Sentiments Index(BSI,IBM Watson API based): https://www.traice.io 
+### 4.List of companies to Analyze: Internally created CSV
+
+This project analyzes 6 companies. However as long as the data files are available, companies can be added to the list and no code changes are necessary. Stock Price and BSI data will have 6 files each. Foreign Exchange is macro economic data so only one file with three different exchange rates are downloaded from the Federal Reserve. Daily data for two years(01-SEP-2019 to 31-AUG-2021) are used for the analysis.
 
 ## Including Plots
 
 You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
-# CompanyNames <- './CompanyNames.csv'
-# df_companies = read.csv(CompanyNames, header = T)
-# head(df_companies)
+CompanyNames <- './data/CompanyNames.csv'
+ForexFile <- './data/FederalReserve_CurrencyXchangeRate.csv'
 
-# df_companies <- read.csv(file=file.path("data", "CompanyNames.csv"), header=F)
+BizSentimentIndexFile <- './data/Boeing.csv'
 
-# file.path("data", "CompanyNames.csv")
-getwd()
 
+headers = read.csv(ForexFile, skip = 5 , header = F, nrows = 1)
+head(headers)
+df_forex = read.csv(ForexFile, skip = 6, header = F)
+colnames(df_forex)= headers
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
