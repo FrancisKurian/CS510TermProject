@@ -122,18 +122,19 @@ ggplot(na.omit(df_forex2), aes(period,value)) +
 #### Beginning of the generic function Calls ####
 
 source("./src/fn_regression.R")
+fn.regress("GE", "Stock.Price","bsi_score")
 fn.regress("GE", "Stock.Price","USDxEUR")
 
 # Printing the function outputs made available as global(optional). 
-print(d1)
-print(d2)
-print(d3)
-print(d4)
-print(d5)
-print(scatter)
-print(std_results)
-print(tab_results)
-print(residual_plot)
+# print(d1)
+# print(d2)
+# print(d3)
+# print(d4)
+# print(d5)
+# print(scatter)
+# print(std_results)
+# print(tab_results)
+# print(residual_plot)
 
 
 
