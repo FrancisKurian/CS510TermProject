@@ -1,10 +1,17 @@
 fn.regress <- function(company,var.Y,var.X){
   
   #create local dataframes based on the company names
-  df_cname <- df_companies[df_companies[,1]  == company, ]
+  
+  if (!exists(paste0("df_",company))) {
+     print("Company Datafiles Missing.Process Terminated")
+     return(FALSE)
+  }else {
+    
   df_b  <- get(paste0("df_",company,"_BSI"))
   df_s  <- get(paste0("df_",company))
-  
+  df_cname <- df_companies[df_companies[,1]  == company, ]
+  }
+
   
   # check all three datasets for data issues and make it global
   
@@ -26,7 +33,7 @@ fn.regress <- function(company,var.Y,var.X){
   
   df_all <- merge(x=df_all, y=df_s, by="period",all.x=TRUE )  # merge with stock price 
   
-  df_all <- subset(df_all,select=c(period,	ticker.x,	name.x,	bsi_score,	USDxINR,	USDxEUR,	USDxYEN,	Close,	Volume))
+  df_all <- subset(na.omit(df_all),select=c(period,	ticker.x,	name.x,	bsi_score,	USDxINR,	USDxEUR,	USDxYEN,	Close,	Volume))
   
   # dfSummary(df_all, style = "grid", plain.ascii = TRUE)
   
@@ -41,7 +48,7 @@ fn.regress <- function(company,var.Y,var.X){
     geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_cname[1,2] ) +
     xlab(var.X) + ylab(var.Y)
   
-  print(scatter)
+#  print(scatter)
   
   # Fit the simple regression model and create a summary
   
@@ -49,5 +56,5 @@ fn.regress <- function(company,var.Y,var.X){
   std_results <<- summary(multi.fit) # std model results
   tab_results <<- tab_model(multi.fit) # tabulated results
   residual_plot <<- autoplot(multi.fit) # residuals plot
-  
+  return(TRUE)
 }

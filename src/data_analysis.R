@@ -34,8 +34,14 @@ summary(df_forex)
 
 
 
-
 for (i in df_companies$ticker) {
+  
+  if (!file.exists(paste0("./data/",i, ".csv"))) {
+    print("Please remove the Company. Files Missing for:")
+    print(i)
+    break
+  }
+  
   #process stock price/volume files from data directory
   #pick the csv file of every company in the input list and create a dataframe in a loop
   
@@ -47,7 +53,7 @@ for (i in df_companies$ticker) {
   
   assign(paste0("df_",i), df_c) #create a new data frame for each company for later use
   
-  # create a data frame to append  every data frame for graphs  
+  # Appends company data frames to one for graphs.   
   
   if (exists("df_c_all")) {
     df_c_all <- rbind(df_c_all, df_c)
@@ -126,8 +132,10 @@ ggplot(na.omit(df_forex2), aes(period,value)) +
 
 source("./src/fn_regression.R")
 
-fn.regress("GE", "Stock.Price","bsi_score")
+fn.regress("AS", "Stock.Price","bsi_score")
+
 fn.regress("GE", "Stock.Price","USDxEUR")
+
 
 
 print(d1)
