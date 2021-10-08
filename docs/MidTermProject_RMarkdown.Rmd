@@ -1,0 +1,35 @@
+---
+title: "Understanding Stock Price Beahavior using an R Based Analytical Framework"
+author: "Francis Kurian"
+date: "10/7/2021"
+output: pdf_document
+---
+\section*{Introduction}
+Stock market behavior is a well researched area due to the free availability of historic information. Several studies link the stock price movement to the sentiments of the market participants. Sentiments are usually formed by relevant economic events specific to the companies. IBM Watson APIs enables tracking of company specific news and social media platforms through extensive text mining and help come out with a Sentiment Index (Negative and positive emotions expressed through text) for a business.  Business Sentiment Index is one such index calculated by Menerva Fintech that quantifies market sentiment for a company . In addition, to understand  sensitivity of stock prices to Global events,  Foreign Exchanges Rate is also introduced as an additional measure.  Idea here is to demonstrate how to extract various relevant data elements from diverse sources, transform and load them into an analytic framework to visualize the relationship.   
+
+\section*{Purpose}
+Primary objective is to develop an analysis system using various R libraries. Extracting and processing data from multiple sources, data cleaning, simplifying repetitive tasks using control structures and functions, use of data visualization techniques and application of statistical methods  are the focus areas while building the framework in R. In other words, learn to write reproducible R code while analyzing stock price movement with respect to Business Sentiment Index(BSI) and Foreign Exchange Rate is the purpose of this project.
+
+The program is run by calling the following code.
+```{r setup, echo=TRUE,message=FALSE,warning=FALSE,results=TRUE}
+source("./code/Mid Term Project Code1.R")
+```
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+# CompanyNames <- './CompanyNames.csv'
+# df_companies = read.csv(CompanyNames, header = T)
+# head(df_companies)
+
+# df_companies <- read.csv(file=file.path("data", "CompanyNames.csv"), header=F)
+
+# file.path("data", "CompanyNames.csv")
+getwd()
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
