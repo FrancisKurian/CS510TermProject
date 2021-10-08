@@ -8,6 +8,7 @@ library(summarytools) #dataframe summaries
 library(ggfortify) #autoplot
 library(sjPlot) #tabmodel
 
+#### Beginning data extraction and cleaning process ####
 
 CompanyNames <- './data/CompanyNames.csv'
 df_companies <- read.csv(CompanyNames, header = T)
@@ -25,6 +26,7 @@ df_forex$USDxYEN <- as.numeric(gsub("ND","",df_forex$RXI_N.B.JA))
 
 df_forex <- subset(df_forex,select = c(period, USDxINR, USDxEUR, USDxYEN))
 df_forex <- df_forex[!duplicated(df_forex$period),] # remove duplicates
+df_forex2 <- melt(df_forex, id.vars="period") # for all in one graphs
 
 sapply(df_forex, class)
 head(df_forex)
@@ -47,9 +49,8 @@ for (i in df_companies$ticker) {
   df_c$period <- as.Date(df_c$Date) # add a date field 
   df_c$ticker <- i # attach ticker
   df_companies_subset <- subset(df_companies, ticker==i) 
-  df_c <- merge(x=df_c, y=df_companies_subset, by="ticker",all.x=TRUE )  # merge with companies list to get the name
-  
-  assign(paste0("df_",i), df_c) #create a new data frame for each company for later use
+  df_c <- merge(x=df_c, y=df_companies_subset, by="ticker",all.x=TRUE )#to get name
+  assign(paste0("df_",i), df_c) #create a new data frame for later use
   
   # Appends company data frames to one for graphs.   
   
@@ -64,10 +65,10 @@ for (i in df_companies$ticker) {
   df_bsi <- read.csv(paste0("./data/",i, "_BSI.csv"), header = T) 
   df_bsi$period <- as.Date(parse_date_time(df_bsi$created_date, c('%Y-%m-%d', '%m/%d/%y')))
   df_bsi$ticker <- i # attach ticker
-  df_bsi <- merge(x=df_bsi, y=df_companies_subset, by="ticker",all.x=TRUE )  # merge with companies list to get the name
+  df_bsi <- merge(x=df_bsi, y=df_companies_subset, by="ticker",all.x=TRUE )##to get name
   df_bsi <- df_bsi[c('ticker','period','name','bsi_score')]
   
-  assign(paste0("df_",i,"_BSI"), df_bsi) #create a new data frame for each company for later use
+  assign(paste0("df_",i,"_BSI"), df_bsi) #create a new data frame forlater use
   
   # create a data frame to append  every data frame for graphs 
   
@@ -78,6 +79,11 @@ for (i in df_companies$ticker) {
     df_bsi_all <- df_bsi}
 
 }
+
+#### End of data extraction and cleaning process ####
+
+summary(df_c_all) # Stock price series
+summary(df_bsi_all) #BSI index series
 
 ggplot(data = df_c_all, aes(period, Close)) +
   geom_line(color = "steelblue", size = 1) +
@@ -96,45 +102,29 @@ ggplot(data = df_c_all, aes(period, Volume)) +
   facet_wrap(~name,scales="free",ncol=2) +
   scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6))
 
-
 ggplot(data = na.omit(df_bsi_all), aes(period,bsi_score)) +
   geom_line(color = "steelblue", size = 1) +
   geom_point(color = "steelblue") + 
-  labs(title = "Time Series of Stock trading volume",
+  labs(title = "Time Series of Business Sentiments Index",
        subtitle = "(Visualization to check any obvious data issues)",
-       y = "Daily Trading Volume", x = " Date") + 
+       y = "Business Sentiment Index", x = " Date") + 
   facet_wrap(~name,scales="free",ncol=3) 
-
-
-
-
-df_forex2 <- melt(df_forex, id.vars="period")
 
 ggplot(na.omit(df_forex2), aes(period,value)) + 
   geom_point() + 
   stat_smooth(formula = y ~ x,method=loess) +
-  facet_wrap(~variable,scales="free",ncol=1)
+  facet_wrap(~variable,scales="free",ncol=1)+ 
+  labs(title = "Time Series of Exchange Rates",
+       subtitle = "(Visualization to check any obvious data issues)",
+       y = "Exchange Rates:$ vs YEN, EURO,Rupee", x = " Date")
 
 
-
-# https://data.library.virginia.edu/diagnostic-plots/
-
-# write a function to call for various companies
-
-# repeat the simple regression for each companies
-# repeat it for three variables
-
-##############################Beginning of the generic function ###########################################
-
+#### Beginning of the generic function Calls ####
 
 source("./src/fn_regression.R")
-
-fn.regress("AS", "Stock.Price","bsi_score")
-
 fn.regress("GE", "Stock.Price","USDxEUR")
 
-
-
+# Printing the function outputs made available as global. 
 print(d1)
 print(d2)
 print(d3)
@@ -144,6 +134,7 @@ print(scatter)
 print(std_results)
 print(tab_results)
 print(residual_plot)
+
 
 
 
