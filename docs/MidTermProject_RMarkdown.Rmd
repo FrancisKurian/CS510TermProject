@@ -1,14 +1,14 @@
 ---
 title: "Understanding Stock Price Beahavior using an R Based Analytical Framework"
 author: "Francis Kurian"
-date: "10/7/2021"
+date: "10/8/2021"
 output: pdf_document
 ---
 \section*{Introduction}
-Stock market behavior is a well researched area due to the free availability of historic information. Several studies link the stock price movement to the sentiments of the market participants. Sentiments are usually formed by relevant economic events specific to the companies. IBM Watson APIs enables tracking of company specific news and social media platforms through extensive text mining and help come out with a Sentiment Index (Negative and positive emotions expressed through text) for a business.  Business Sentiment Index is one such index calculated by TRaiCE Fintech that quantifies market sentiment for a company . In addition, to understand  sensitivity of stock prices to Global events,  Foreign Exchanges Rate is also introduced as an additional measure.  Idea here is to demonstrate how to extract various relevant data elements from diverse sources, transform and load them into an analytic framework to visualize the relationship.   
+Stock market behavior is a well researched area with plenty of historic information available free. Several studies link the stock price movement of a company to the perception of the market participant about that company.IBM Watson APIs enable tracking of company specific news and social media interactions through extensive text mining and help come out with a Sentiment (Negative and positive emotions expressed through words or text) Index for a business.Business Sentiment Index(BSI) is one such index calculated by TRaiCE Fintech at company level. In addition, to understand  sensitivity of stock prices to Global events, Foreign Exchanges Rate is also introduced as an additional measure.  Idea here is to demonstrate how to extract various relevant data elements from diverse sources, transform and load them into an analytic framework to visualize and understand the inherent relationships.   
 
-\section*{Purpose}
-Primary objective is to develop an analysis system using various R libraries. Extracting and processing data from multiple sources, data cleaning, simplifying repetitive tasks using control structures and functions, use of data visualization techniques and application of statistical methods  are the focus areas while building the framework in R. In other words, learn to write reproducible R code while analyzing stock price movement with respect to Business Sentiment Index(BSI) and Foreign Exchange Rate is the purpose of this project.
+\section*{Objective}
+Primary objective is to develop an analysis system using various R libraries. Extracting and processing data from multiple sources, data cleaning, simplifying repetitive tasks using control structures and functions, use of data visualization techniques and application of statistical methods  are the focus areas while building the framework in R. In other words, learn to write reproducible R code while analyzing stock price movement with respect to Business Sentiment Index(BSI) and Foreign Exchange Rate is the objective of this project.
 
 \section*{List of Libraries}
 For this project the following Libraries are used for data validation, graphics and statistical analysis
@@ -146,9 +146,8 @@ ggplot(na.omit(df_forex2), aes(period,value)) +
        y = "Exchange Rates:$ vs YEN, EURO,Rupee", x = " Date")
 
 ```
-\subsection{User Defined Function for Company Level Analysis }
-This is a generic function that takes company name, dependent(x) and independent(y) variables for the regression analysis. It also ensures that necessary data frames to conduct the analysis are existing. 
-
+\section{User Defined Function for Company Level Analysis }
+A generic function "fn.regres" was defined and it takes company name, dependent(x) and independent(y) variables for the regression analysis. It ensures that necessary data frames to conduct the analysis exists and polots, analysis summaries and other visual diagnostics are available in the results set.
 ```{r fn1, echo=TRUE}
 fn.regress <- function(company,var.Y,var.X){
   
@@ -185,8 +184,8 @@ fn.regress <- function(company,var.Y,var.X){
   
   df_all <- merge(x=df_all, y=df_s, by="period",all.x=TRUE )  # merge with stock price 
   
-  df_all <- subset(na.omit(df_all),select=c(period,	ticker.x,	name.x,bsi_score,USDxINR,
-                                            USDxEUR,	USDxYEN,	Close,	Volume))
+  df_all <- subset(na.omit(df_all),select=c(period,	ticker.x,	name.x,	bsi_score,	
+                                            USDxINR,	USDxEUR,	USDxYEN,	Close,	Volume))
   
   # dfSummary(df_all, style = "grid", plain.ascii = TRUE)
   
@@ -195,7 +194,7 @@ fn.regress <- function(company,var.Y,var.X){
   
   d5 <<- dfSummary(df_all, style = "grid", plain.ascii = TRUE) #output saved global
   
-  # Scatterplot the variable relationship to visualize. output saved global 
+  # Scatterplot the variable relationship to visualize.Output saved global
   
   scatter <<- ggplot(df_all, aes(x=df_all[,var.X], y=df_all[,var.Y])) + 
     geom_point()+
@@ -210,11 +209,15 @@ fn.regress <- function(company,var.Y,var.X){
   std_results <<- summary(multi.fit) # std model results
   tab_results <<- tab_model(multi.fit) # tabulated results
   residual_plot <<- autoplot(multi.fit) # residuals plot
+  
+  print(std_results)
+  print(residual_plot)
+  
   return(TRUE)
 }
 
 ```
-\subsection{Calling the Function to Test a Company with no data }
+\subsection{Executing the user defined Function to Test a Company with no data }
 Expectation is that even if the user added a company name in to the list of companies to analyze and there is no data downloaded for that company,  this should not result in an error and the user should be alerted about missing data. 
 
 ```{r fn2, echo=TRUE}
@@ -225,7 +228,7 @@ source("./src/fn_regression.R") # call the function to global environment to be 
 fn.regress("UNK", "Stock.Price","bsi_score")
 
 ```
-\subsection{Calling the Analysis Function Repeatedly for various Companies }
+\subsection{Executing the Analysis Function Repeatedly for various Companies in the list }
 This outputs a scatterplot that shows the relationship between the variables, Standard Summary results of a regression function, Tabulated results of a regression function with coefficients and plots residuals for better diagnostics. Simple regression can be performed for any company and any set of variables. The coefficients and p values quantify the sensitivity of the variable and degree of confidence. Multiple regression and tests of time series properties are for the future development.   
 
 ```{r fn3, echo=TRUE}
@@ -237,3 +240,8 @@ fn.regress("GE", "Stock.Price","bsi_score")
 fn.regress("GE", "Stock.Price","USDxEUR")
 
 ```
+\section{Summary of the Analysis }
+Scatterplot and regression analysis demonstrate a significant relationship between Stock Prices and Business Sentiment Index and Stock Prices and USDvsEuro foreign exchange rates in case of General Electric Company. The same analysis can be repeated for any 6 companies in our test list by calling the function "fn_regression()" repeatedly with simply changing the function arguments.This is a rudimentary analysis with simple regression however significant effort was spent on reading and cleaning data  from various sources and made several data series consumable for various advanced algorithms that R offers. In the future, multiple regression  approach and time series models like co-integration can be explored  and that will add more analytic content to this project. 
+\section{References}
+1. Understanding Diagnostic Plots for Linear Regression Analysis. 
+https://data.library.virginia.edu/diagnostic-plots

@@ -124,7 +124,7 @@ ggplot(na.omit(df_forex2), aes(period,value)) +
 source("./src/fn_regression.R")
 fn.regress("GE", "Stock.Price","USDxEUR")
 
-# Printing the function outputs made available as global. 
+# Printing the function outputs made available as global(optional). 
 print(d1)
 print(d2)
 print(d3)
