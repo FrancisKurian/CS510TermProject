@@ -2,7 +2,9 @@
 title: "Understanding Stock Price Beahavior using an R Based Analytical Framework"
 author: "Francis Kurian"
 date: "10/8/2021"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 \section*{Introduction}
 Stock market behavior is a well researched area with plenty of historic information available free. Several studies link the stock price movement of a company to the perception of the market participant about that company.IBM Watson APIs enable tracking of company specific news and social media interactions through extensive text mining and help come out with a Sentiment (Negative and positive emotions expressed through words or text) Index for a business.Business Sentiment Index(BSI) is one such index calculated by TRaiCE Fintech at company level. In addition, to understand  sensitivity of stock prices to Global events, Foreign Exchanges Rate is also introduced as an additional measure.  Idea here is to demonstrate how to extract various relevant data elements from diverse sources, transform and load them into an analytic framework to visualize and understand the inherent relationships.   
