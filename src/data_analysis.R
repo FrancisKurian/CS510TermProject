@@ -14,6 +14,7 @@ CompanyNames <- './data/CompanyNames.csv'
 df_companies <- read.csv(CompanyNames, header = T)
 head(df_companies)
 
+
 ForexFile <- './data/FederalReserve_CurrencyXchangeRate.csv'
 headers <- read.csv(ForexFile, skip = 5 , header = F, nrows = 1) #header info is at row #6
 df_forex <- read.csv(ForexFile, skip = 6, header = F) #data begins at row #7 
