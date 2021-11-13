@@ -146,6 +146,7 @@ CompanyNames <- './data/CompanyNames.csv'
    residual_plot <- autoplot(multi.fit) # residuals plot
    
    print(std_results)
+   print(tab_results)
    print(residual_plot)
    
    return(TRUE)
