@@ -131,22 +131,48 @@ CompanyNames <- './data/CompanyNames.csv'
    
    # Scatterplot the variable relationship to visualize.Output saved global
    
-   scatter <- ggplot(df_all, aes(x=df_all[,var.X], y=df_all[,var.Y])) + 
-     geom_point()+
-     geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_cname[1,2] ) +
-     xlab(var.X) + ylab(var.Y)
+   # scatter <- ggplot(df_all, aes(x=df_all[,var.X], y=df_all[,var.Y])) + 
+   #   geom_point()+
+   #   geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_cname[1,2] ) +
+   #   xlab(var.X) + ylab(var.Y)
    
-   print(scatter)
+   scatter1 <- ggplot(df_all, aes(x=bsi_score, y=Stock.Price)) + 
+     geom_point()+
+     geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_all[1,3] ) 
+   
+   scatter2 <- ggplot(df_all, aes(x=USDxEUR, y=Stock.Price)) + 
+     geom_point()+
+     geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_all[1,3] ) 
+   
+   scatter3 <- ggplot(df_all, aes(x=USDxYEN, y=Stock.Price)) + 
+     geom_point()+
+     geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_all[1,3] ) 
+   
+   
+   scatter4 <- ggplot(df_all, aes(x=USDxINR, y=Stock.Price)) + 
+     geom_point()+
+     geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_all[1,3] ) 
+   
+   
+   scatter <-  ggarrange(scatter1, scatter2, scatter3, scatter4 + rremove("x.text"), 
+             labels = c("A", "B", "C","D"),
+             ncol = 2, nrow = 2)
+   
    
    # Fit the simple regression model and create a summary
    
-   multi.fit <- lm(Stock.Price~USDxEUR, data=df_all)
+   
+   multi.fit <- lm(Stock.Price~bsi_score+USDxEUR+USDxYEN+USDxINR, data=df_all)
    std_results <- summary(multi.fit) # std model results
    tab_results <- tab_model(multi.fit) # tabulated results
    residual_plot <- autoplot(multi.fit) # residuals plot
    
+   print(scatter)
+   
+   
+   
+   cat("MULTIPLE REGRESSION ANALYSIS RESULTS")
    print(std_results)
-   print(tab_results)
    print(residual_plot)
    
    return(TRUE)
@@ -172,7 +198,7 @@ fn.data_diagnostics <- function(){
     df_companies <- read.csv(CompanyNames, header = T)
   }
   
-  print(head(df_companies))
+  # print(head(df_companies))
   
   
   ForexFile <- './data/FederalReserve_CurrencyXchangeRate.csv'
@@ -189,9 +215,9 @@ fn.data_diagnostics <- function(){
   df_forex <- df_forex[!duplicated(df_forex$period),] # remove duplicates
   df_forex2 <- melt(df_forex, id.vars="period") # for all in one graphs
   
-  sapply(df_forex, class)
-  head(df_forex)
-  summary(df_forex)
+  # sapply(df_forex, class)
+  # head(df_forex)
+  # summary(df_forex)
   
   
   
@@ -243,8 +269,8 @@ fn.data_diagnostics <- function(){
   
   #### End of data extraction and cleaning process ####
   
-  print( summary(df_c_all) )# Stock price series
-  print( summary(df_bsi_all)) #BSI index series
+ # print( summary(df_c_all) )# Stock price series
+ # print( summary(df_bsi_all)) #BSI index series
   
   print( ggplot(data = df_c_all, aes(period, Close)) +
            geom_line(color = "steelblue", size = 1) +
