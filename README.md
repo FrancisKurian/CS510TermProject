@@ -9,11 +9,12 @@ Stock market behavior is a well researched area with plenty of historic informat
 Primary objective is to develop an analysis system using various R libraries. Extracting and processing data from multiple sources, data cleaning, simplifying repetitive tasks using control structures and functions, use of data visualization techniques and application of statistical methods  are the focus areas while building the framework in R. In other words, learn to write reproducible R code while analyzing stock price movement with respect to Business Sentiment Index(BSI) and Foreign Exchange Rates is the objective of this project.
 
 ## To run the analysis
-1.Download "Reworked Term Project V3.0" from github and extract to a local folder.
-2.Before execute any code, please take a look at the Expected output of RMD saved in this location as PDF: "./docs/MidTermProject_RMarkdown.pdf" 
-3.Open RMD File in R Studio: "./docs/MidTermProject_RMarkdown.Rmd"
-4.Please change your Knit/Knit directory to 'Project Directory or 'Current Working Directory'.  
-5.'Knit to PDF' to see the output.  Optionally, you can run the R code chunks 
+
+1. Download "Reworked Term Project V3.0" from github and extract to a local folder.
+2. Before execute any code, please take a look at the Expected output of RMD saved in this location as PDF: "./docs/MidTermProject_RMarkdown.pdf" 
+3. Open RMD File in R Studio: "./docs/MidTermProject_RMarkdown.Rmd"
+4. Please change your Knit/Knit directory to 'Project Directory or 'Current Working Directory'.  
+5. 'Knit to PDF' to see the output.  Optionally, you can run the R code chunks 
 
 ## To repeat the analysis for various companies
 Modify the arguments(company)to function, fn.analysis() -Line # 47 in R Markdown
