@@ -1,4 +1,4 @@
-fn.analysis <- function(company,var.Y,var.X){
+fn.analysis <- function(company){
   
 CompanyNames <- './data/CompanyNames.csv'
 
@@ -83,7 +83,7 @@ CompanyNames <- './data/CompanyNames.csv'
 
  
  
- fn.regress <- function(company,var.Y,var.X){
+ fn.regress <- function(company){
    
    #create local dataframes based on the company names
    
@@ -178,7 +178,7 @@ CompanyNames <- './data/CompanyNames.csv'
    return(TRUE)
  }
  
- fn.regress(company, var.Y,var.X)
+ fn.regress(company)
   
 }
 

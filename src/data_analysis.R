@@ -9,14 +9,8 @@ library(ggfortify) #autoplot
 library(sjPlot) #tabmodel
 library(ggpubr) # wrapper for ggplot
 
-#### Beginning data extraction and cleaning process ####
-
 source("./src/fn_data_preperation.R")
-fn.analysis("F", "Stock.Price","bsi_score")
-fn.analysis("F", "Stock.Price","USDxEUR")
-
-
-
+fn.analysis("F")
 fn.data_diagnostics()
 
 
