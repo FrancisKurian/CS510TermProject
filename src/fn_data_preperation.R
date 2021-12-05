@@ -1,6 +1,6 @@
 fn.analysis <- function(company){
   
-CompanyNames <- './data/CompanyNames.csv'
+CompanyNames <- './data/CompanyNames1.csv'
 
 # error trap and validation added - Peer review
   
