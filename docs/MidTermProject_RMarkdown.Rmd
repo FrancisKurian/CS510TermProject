@@ -17,6 +17,7 @@ Primary objective is to develop an analysis system using various R libraries. Ex
 For this project the following Libraries are used for data validation, graphics and statistical analysis
 
 ```{r libraries, echo=TRUE,message=FALSE,warning=FALSE,results=FALSE}
+library(testthat)
 library(ggplot2) 
 library(tidyr)
 library(plyr)
@@ -44,6 +45,11 @@ Two companies : GE and Ford are used for testing.
 }
 ```{r csv1, echo=TRUE}
 source("./src/fn_data_preperation.R")
+#test the data files exists for the company to be analyzed and functions returns expected results
+#When test fails, relevant messages will be printed to show the issue.
+
+test_that("Files/Folder Validation", {expect_equal(fn.analysis("F"),TRUE)})
+
 fn.analysis("F")
 fn.analysis("GE")
 

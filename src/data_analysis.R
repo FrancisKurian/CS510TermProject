@@ -1,3 +1,4 @@
+library(testthat)
 library(ggplot2) 
 library(tidyr)
 library(plyr)
@@ -10,9 +11,11 @@ library(sjPlot) #tabmodel
 library(ggpubr) # wrapper for ggplot
 
 source("./src/fn_data_preperation.R")
-fn.analysis("F")
-fn.data_diagnostics()
+test_that("Files/Folder Validation", {expect_equal(fn.analysis("H"),TRUE)})
 
+
+fn.analysis("F")
+cfn.data_diagnostics()
 
 
 
