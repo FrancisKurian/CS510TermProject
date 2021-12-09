@@ -1,0 +1,179 @@
+---
+title: Social media sentiment analysis of listed companies and its impact on Stock Prices 
+author: Francis J Kurian
+date: "12/12/2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+bibliography: BibLaTex.bib
+csl: journal-of-the-royal-society-interface.csl
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Abstract
+
+Social networking sites and news feeds generate voluminous text information that could reveal market participant’s sentiments about a business. Quantifying such sentiments and understanding the relevance of such information on a company’s stock price is an area of interest for many researchers. Sentiment analysis, using extensive text mining, is technically challenging to build but services like IBM Watson Application Programming Interfaces (APIs) simplifies such tasks for researchers. This paper examines how stock price movements are correlated with the expressed public sentiments (quantified into a sentiment index leveraging Watson APIs) about certain companies. To achieve this goal, a tool that integrates relevant data sources and automates the analysis was developed in R.  A multiple regression model was employed to quantify the relationship between stock prices and sentiment index. In addition to the sentiment index, exchange rates were introduced as explanatory variables to capture the international exposure of the companies. Validation of the model on two listed companies in the United States demonstrate significant explanatory power of sentiments index and thus supports the hypothesis that sentiment analysis is a useful predictor of stock price movement.      
+
+## Introduction 
+
+### Sentiment Analysis and Stock Prices
+
+Behavioral economics tells us that emotions can profoundly affect individual behavior and decision-making. Does this also apply to societies at large, i.e. can societies experience mood states that affect their collective decision making? [@bollen:2011] Efficient Market Hypothesis implies that stock market prices incorporate the new information available to the market participants instantaneously. News feeds and social media interactions generate large volume of content in the form of product reviews, service levels, management decisions and many other relevant information that are sensitive to the stock prices. For example, many customers posting negative reviews about a product in social media could impact the product demand and future profitability of a company. News about supply chain bottlenecks for certain electronics parts could result in on time product availability in the market and result in sales target missed. News about political instability and changes in international business environments could impact the foreign exchange rates and affect the profitability of companies exporting to those nations. Sentiment analysis of news feed and social media data could gather such information as it starts appearing in various platforms. 
+
+It’s anticipated that sentiment analysis is relevant for understanding the stock price movement[@Pooja:2021]. Quantification of human sentiments expressed in text documents like news feed or social media interaction is a computationally intensive task.This is where Watson API services help to look at these voluminous documents to capture feelings, such as anger, sadness, joy, fear, hesitation etc. Sentiment is a higher-level classifier that divides the spectrum of emotions into positive, negative, and neutral. Once such classfication is done it is possible to build an index to track the sentiments movement on a daily basis and analyse its sensitivity to stock prices. This system leverages on an index already built by TRaiCE Inc using Watson APIs and is available as a service. In following sections we will discuss the methodology, data sources and the analysis results.
+ 
+
+### Quantification of Stock Market Behavior using Sentiment Analysis  
+
+Several researchers empirically established the links between sentiments analysis and stock prices movements. Bollen et al. conducted a conclusive study using microblogs from twitter and established a causal relationship with sentiment score and Dow Jones Industrial Average. Seki et al. [@seki:2021]. Zhang et al.[@zhang:2021] analyzed news text to build a business sentiment index to use it as an economic index in predicting stock prices. Yahya et al.[@Yahya:2015] used a linear  regression approach incorporating sentiment analysis as an explanatory variable and concluded that introducing sentiment analysis provided significant lift in predicting the stock price movement. On similar lines, we developed a rudimentary regression-based analysis system to understand the stock price movement with respect business sentiment index (BSI). 
+
+### Objectives
+This paper attempts to analyze stock price behavior of two companies listed in the US stock market with respect to changes in Business Sentiment index (BSI) . BSI quantifies the human feelings captured through the extensive text-based content from news feeds and social media interactions. In addition to BSI, foreign exchange rates are added as an additional explanatory variable to capture the international exposure of the companies with the assumption that exchange rates are a better proxy when news and social media interactions are conducted using a language other than English. 
+
+
+## Methodology and Data
+
+
+### Analysis System and Linear Regression Model
+An R based analysis system was developed to integrate stock prices, BSI and various exchange rates at company level. The design was in a such a way that analyst could make a function call with ticker symbol and produce data diagnostics and multiple regression analysis.  This study leverages on that system. 
+
+Ordinary Least Square Regression:
+
+$X_{i}$ are the $k$ independent variables and $Y$ is a dependent variable, for each sample of $n$ , the value of $Y_{n}$ is:
+\begin{equation}
+\large{Y_{n}= \sum_{i=0}^k \beta_{i} X_{ni}+\epsilon_{i}}
+\end{equation}
+$\epsilon_{i}$ =Random Error Term
+
+The OLS model in this context is formulated as:
+
+\begin{equation}
+\large{StockPrice = \beta_{0   } + \beta_{1} BSI +  \beta_{2} USD.EUR +\beta_{3} USD.YEN +\beta_{4} USD.INR }
+\label{eq:f}
+\end{equation}
+
+
+where: \
+$\mathbf{StockPrice}$ is Stock Price of the company;\
+$\mathbf{BSI}$ is Business Sentiment Index ;\
+$\mathbf{USD.EUR}$ is US Dollar vs Euro exchange rate; \
+$\mathbf{USD.YEN}$ is US Dollar vs Japanese Yen exchange rate;\
+$\mathbf{USD.INR}$ is US Dollar vs Indian Rupee exchange rate;\
+$\beta_{0}$ is the intercept, $\beta_{1}$,$\beta_{2}$,$\beta_{3}$,$\beta_{4}$ are the coefficients.
+
+### Data Collection and Profile
+
+Daily data was collected for a period of two years (01-SEP-2019 to 31-AUG-2021) for the following data series. Daily stock prices[@yahoo], Business sentiments index[@traice:2021] and foreign exchange rates[@fed].  The following graphs shows the data distribution for a select number of the companies including the ones we analyzed for the study. 
+
+```{r fig1, echo=FALSE, warning=FALSE, message=FALSE, fig.width=7, fig.height=4}
+# # Loads required packages
+library(testthat)
+library(ggplot2) 
+library(tidyr)
+library(plyr)
+library(lubridate)
+library(scales)
+library(reshape2)
+library(summarytools) #dataframe summaries
+library(ggfortify) #autoplot
+library(sjPlot) #tabmodel
+library(ggpubr) # wrapper for ggplot
+source("./src/fn_data_preperation.R")
+fn.data_diagnostics()
+```
+
+Overall, various time series data demonstrate volatility especially around the early 2020. This could be attributed to the Covid-19 uncertainties in the market at the time. BSI data clearly show some outliers that need a review and probably a correction. With these points noted, the data was used for the further analysis.  
+
+## Analysis of General Electric Corporation
+```{r fig2, echo=FALSE, warning=FALSE, message=FALSE, fig.width=7, fig.height=4}
+source("./src/fn_data_preperation.R")
+fn.analysis("GE")
+```
+
+```{r grid-fig, echo=FALSE, fig.cap="Racetrack model showing adaptive meshing. Full racetrack showing the $R_{top}$ and $R_{bot}$ used to generate prescribed motion in red and adaptive meshing of domain: roughest mesh (32 x 32 grid) in dark blue, intermediate mesh (16 x 16 grid) in teal, and finest mesh (8 x 8 grid) in gold, black box highlights inset a. Inset a: close up of region including part of the tube and racetrack showing meshes, black box highlights inset b. Inset b: close up of tube showing relation of finest mesh and target points of the racetrack. ", out.width = '100%'}
+# knitr::include_graphics("figures/Figure1.png")
+```
+
+
+The circulatory model consisted of a racetrack that was effectively made rigid through the use of tether points with an inner lumen, two straight sections connected by two curved regions, and a moving region at the bottom of the racetrack, representing the heart tube that moved with a preferred motion. The racetrack design was used to stay consistent with past designs for easier comparison to other analyses [@Jung:2000, @Lee:2012, @Baird:2014, @Waldrop:peristalsis]. 
+
+
+The elastic region had a 4:1 length:diameter ratio  with the inner 3/4 of the tube length consisting of points tethered to target points, which drove the preferred peristaltic motion (Fig. \ref{fig:grid-fig}). The rest of the racetrack were tethered to target points which remained still throughout the simulations. Target point stiffness ($k_{targ}$) was chosen as 30.0 to remain consistent with the model in [@Waldrop:peristalsis].
+
+The force equation used to drive peristalsis in the model is: 
+\begin{equation}
+\mathbf{f}(r,t) = k_{targ}(\mathbf{Y}(r,t) - \mathbf{X}(r,t))
+\label{eq:f}
+\end{equation}
+where $\mathbf{Y}(r,t)$ is the preferred position of the boundary. Only the preferred motion of the boundary in each model of peristalsis differed. Each model of driving peristalsis is described below. 
+
+#### Opposing sine-wave peristalsis model
+
+The sine-wave model defines the motion of the boundary as two opposing sine waves:
+\begin{equation}
+y_{top,bot} = R_{top,bot} \pm A \sin(2\pi f t+ 2\pi cx_t)
+\label{eq:sinewaves}
+\end{equation} 
+where $f$ is the compression frequency, $c$ is the compression-wave speed (held constant throughout the study at a non-dimensional speed of 3.0), $A$ is the amplitude of the contraction, and $x_t$ is the horizontal distance from the beginning of the prescribed motion section. The compression ratio gives the percent occlusion and is equal to $2A$. The peristaltic waves created by Eq.~\ref{eq:sinewaves} propagated from left to right, therefore driving fluid flow counter-clockwise in the lumen of the racetrack. The stiffness of the boundary and target point stiffness ($k_{targ}=30.0$) allowed for very little independent elastic motion in the peristaltic region of the tube.
+
+For additional details on the opposing sine-wave peristalsis model, see [@Waldrop:peristalsis]. 
+
+#### Opposing Gaussian-peak peristalsis model
+
+The pinch model defines the motion of the boundary as two sharp, Gaussian peaks, with the remainder of the boundary being free to flex with little restriction by the target points: 
+\begin{equation}
+y_{top,bot} = R_{top,bot} \pm A\exp((-0.5(x_t-\gamma)/\sigma)^2)
+\label{eq:gaussianwaves}
+\end{equation}
+Where $\gamma$ is the position of the pinch on the x-axis of the center of the tube and $\sigma$ is the width of the pinch. The pinch was advanced by altering $\gamma$ depending on the time step of the simulation. For the points within the region of the Gaussian wave, the target point stiffness was chosen to be extremely stiff ($k_{targ}=2500$) so that the target points adhered closely to the programmed waveform. Outside the peak region, the target points were tethered very loosely ($k_{targ}=0.7$) with a spring constant about two orders of magnitude stiffer to allow for elastic interactions between fluid and the heart tube.
+
+
+### Analysis of Flow and Pressure Fields
+
+Several calculations of non-dimensional fluid flow and pressure were made for each simulation in VisIt 2.9.1 [@HPV:VisIt] and *R* [@R:2011], similar to the analyses in [@Waldrop:peristalsis]. Positive flow speeds indicate fluid motion in the counter-clockwise direction in the racetrack, the same direction as the traveling peristaltic wave. All values presented in the analysis are dimensionless, and more information about nondimensionalizing values can be found in the supplemental information to this paper. 
+
+At each time step in the simulation, the magnitude of dimensionless fluid velocity was recorded and then spatially averaged across each area to find $|\mathbf{u'}|$ across four rigid sections of the racetrack: the upper position, a connecting vertical position, the inflow region (vena cava) and outflow region (aorta). The mean speeds $|\mathbf{u'}|$ were then temporally averaged to find the average flow speed across each simulation ($U_{avg}$). The maximum value of flow speed, $\mathbf{u'_{m}}$, was also taken at each time step, and the maximum of these in a simulation represents the peak flow speed ($U_{peak}$). 
+
+Non-dimensional pressure was also recorded for each time step of the simulation and spatially averaged at each time step near the inflow area (vena cava position) and the outflow area (aorta position) of the elastic region. For each simulation, the vena cava and aorta positions' pressures were averaged temporally to find $p_{in}$ and $p_{out}$, respectively. Each inflow pressure was subtracted from the outflow pressure at each time step to find their difference, and these differences were averaged over simulation time to find $\Delta P$. 
+
+Volume flow rate was calculated using the velocity profile across the upper position of the racetrack for each simulation. At each time step during a simulation, the velocities were sampled across the diameter of the tube to create a velocity profile across the tube. Each value was then used to calculate the volume of a concentric ring of fluid that passed through the tube during the time step based on the velocity at that position in the tube. These rings were then summed to find the volume flow rate at that time step, then these volume flow rates were averaged temporally to find the average volume flow rate of the simulation, $Q$. 
+
+## Results
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE} 
+# # Loads required packages
+# library(ggplot2)
+# library(reshape2)
+# require(RColorBrewer)
+# library(grid)
+# library(gridExtra)
+# library(knitr)
+# # Create Data frame with all data pulled from matlab figures for sine wave
+# data<-read.csv("data/sobol_indices_2019-02-04.csv",header=TRUE)
+# cbPalette1p <- c("#999999", "#c9c9c9","#E69F00", "#eec770","#56B4E9","#a7cfe5", "#009E73","#55c3a5","#CC79A7","#e2b1cc","#9345D5","#B689DC","#C70039","#CF7070")
+# 
+# Qdata<-data[data$var=="Q",]
+# Qmelted<-melt(Qdata,measure.vars=c("sobol_sine","sobol_pinch"))
+# Qdata$parameters<-factor(Qdata$parameters,levels=Qdata$parameters)
+```
+
+
+```{r results-fig2, echo=FALSE, fig.cap="Sobol indices for volume flow rate.", fig.width=6, fig.height=3}
+# ggplot(Qmelted,aes(parameters,value,fill=variable)) +
+#   geom_bar(stat="identity",position="dodge")+
+#   scale_y_continuous("Sobol indices")+
+#   scale_x_discrete("")+scale_fill_manual(values=c(cbPalette1p[5],cbPalette1p[6]))+
+#   theme_bw(base_size = 16) +
+#   theme(axis.text.x=element_text(angle=45,hjust=1),
+#         legend.direction="vertical",legend.position=c("right"))
+```
+
+
+
+## References 
+

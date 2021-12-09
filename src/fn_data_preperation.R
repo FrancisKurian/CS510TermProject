@@ -136,21 +136,25 @@ CompanyNames <- './data/CompanyNames.csv'
    #   geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_cname[1,2] ) +
    #   xlab(var.X) + ylab(var.Y)
    
-   scatter1 <- ggplot(df_all, aes(x=bsi_score, y=Stock.Price)) + 
+    scatter1 <- ggplot(df_all, aes(x=bsi_score, y=Stock.Price)) + 
      geom_point()+
+     theme(plot.title = element_text(size = 8))+
      geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_all[1,3] ) 
    
    scatter2 <- ggplot(df_all, aes(x=USDxEUR, y=Stock.Price)) + 
      geom_point()+
+     theme(plot.title = element_text(size = 8))+
      geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_all[1,3] ) 
    
    scatter3 <- ggplot(df_all, aes(x=USDxYEN, y=Stock.Price)) + 
      geom_point()+
+     theme(plot.title = element_text(size = 8))+
      geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_all[1,3] ) 
    
    
    scatter4 <- ggplot(df_all, aes(x=USDxINR, y=Stock.Price)) + 
      geom_point()+
+     theme(plot.title = element_text(size = 8))+
      geom_smooth(formula = y ~ x,method=lm)+ ggtitle(df_all[1,3] ) 
    
    
@@ -278,6 +282,11 @@ fn.data_diagnostics <- function(){
            labs(title = "Time Series of Stock Prices by Company",
                 subtitle = "(Visualization to check any obvious data issues)",
                 y = "Stock Prices - Closing ", x = " Date") + 
+           theme(
+             plot.title = element_text(hjust = 0, size = 10),    # Center title position and size
+             plot.subtitle = element_text(hjust = 0,size = 8),            # Center subtitle
+             plot.caption = element_text(hjust = 0, face = "italic")# move caption to the left
+           )+
            facet_wrap(~name,scales="free",ncol=2))
   
   print(ggplot(data = df_c_all, aes(period, Volume)) +
@@ -286,6 +295,11 @@ fn.data_diagnostics <- function(){
           labs(title = "Time Series of Stock trading volume",
                subtitle = "(Visualization to check any obvious data issues)",
                y = "Daily Trading Volume", x = " Date") + 
+          theme(
+            plot.title = element_text(hjust = 0, size = 10),    # Center title position and size
+            plot.subtitle = element_text(hjust = 0,size = 8),            # Center subtitle
+            plot.caption = element_text(hjust = 0, face = "italic")# move caption to the left
+          )+
           facet_wrap(~name,scales="free",ncol=2) +
           scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)))
   
@@ -295,11 +309,21 @@ fn.data_diagnostics <- function(){
           labs(title = "Time Series of Business Sentiments Index",
                subtitle = "(Visualization to check any obvious data issues)",
                y = "Business Sentiment Index", x = " Date") + 
+          theme(
+            plot.title = element_text(hjust = 0, size = 10),    # Center title position and size
+            plot.subtitle = element_text(hjust = 0,size = 8),            # Center subtitle
+            plot.caption = element_text(hjust = 0, face = "italic")# move caption to the left
+          )+
           facet_wrap(~name,scales="free",ncol=3) )
   
   print( ggplot(na.omit(df_forex2), aes(period,value)) + 
            geom_point() + 
            stat_smooth(formula = y ~ x,method=loess) +
+           theme(
+             plot.title = element_text(hjust = 0, size = 10),    # Center title position and size
+             plot.subtitle = element_text(hjust = 0,size = 8),            # Center subtitle
+             plot.caption = element_text(hjust = 0, face = "italic")# move caption to the left
+           )+
            facet_wrap(~variable,scales="free",ncol=1)+ 
            labs(title = "Time Series of Exchange Rates",
                 subtitle = "(Visualization to check any obvious data issues)",
