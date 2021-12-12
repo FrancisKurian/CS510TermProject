@@ -10,10 +10,10 @@ Primary objective is to develop an analysis system using various R libraries. Ex
 
 ## To run the analysis
 
-1. Download "Reworked Term Project V3.0" from github and extract to a local folder.
-2. Before execute any code, please take a look at the Expected output of RMD saved in this location as PDF: "./docs/MidTermProject_RMarkdown.pdf" 
-3. Open RMD File in R Studio: "./docs/MidTermProject_RMarkdown.Rmd"
-4. Please change your Knit/Knit directory to 'Project Directory or 'Current Working Directory'.  
+1. Download latest version of code and data from github and extract to a local folder.
+2. Before execute any code, please take a look at the Expected output of RMD saved in this location as PDF: "./MidTermProject_RMarkdown.pdf" 
+3. Open RMD File in R Studio: "./MidTermProject_RMarkdown.Rmd"
+4. Please change your Knit/Knit directory to  'Current Working Directory'.  
 5. 'Knit to PDF' to see the output.  Optionally, you can run the R code chunks 
 
 ## To repeat the analysis for various companies
@@ -22,3 +22,6 @@ Data for 6 companies below are available.
 GE,BA,F,FE,KHC,OXY
 
 For any reproducible error, please message me in slack.
+
+##  Final Paper
+Final paper location "./final_paper_francis.pdf". Final paper RMD file location "./final_paper_francis.rmd" . The documents files are now moved into the root folder intentionally to run without any directory changes.

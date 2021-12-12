@@ -168,22 +168,28 @@ CompanyNames <- './data/CompanyNames.csv'
    
    multi.fit <- lm(Stock.Price~bsi_score+USDxEUR+USDxYEN+USDxINR, data=df_all)
    std_results <- summary(multi.fit) # std model results
+   
    tab_results <- tab_model(multi.fit) # tabulated results
    residual_plot <- autoplot(multi.fit) # residuals plot
    
    print(scatter)
    
-   
-   
-   cat("MULTIPLE REGRESSION ANALYSIS RESULTS")
+
+   cat("MULTIPLE REGRESSION RESULTS & ANALYSIS OF ERROR")
    print(std_results)
+   #print(tab_results)
    print(residual_plot)
+   
+   # tab_model(multi.fit, file = "./plot.html")
+   # webshot::webshot("./plot.html","./plot.png")
+   
+   
    
    return(TRUE)
  }
  
- fn.regress(company)
-  
+fn.regress(company)
+
 }
 
 
@@ -289,19 +295,19 @@ fn.data_diagnostics <- function(){
            )+
            facet_wrap(~name,scales="free",ncol=2))
   
-  print(ggplot(data = df_c_all, aes(period, Volume)) +
-          geom_line(color = "steelblue", size = 1) +
-          geom_point(color = "steelblue") + 
-          labs(title = "Time Series of Stock trading volume",
-               subtitle = "(Visualization to check any obvious data issues)",
-               y = "Daily Trading Volume", x = " Date") + 
-          theme(
-            plot.title = element_text(hjust = 0, size = 10),    # Center title position and size
-            plot.subtitle = element_text(hjust = 0,size = 8),            # Center subtitle
-            plot.caption = element_text(hjust = 0, face = "italic")# move caption to the left
-          )+
-          facet_wrap(~name,scales="free",ncol=2) +
-          scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)))
+  # print(ggplot(data = df_c_all, aes(period, Volume)) +
+  #         geom_line(color = "steelblue", size = 1) +
+  #         geom_point(color = "steelblue") + 
+  #         labs(title = "Time Series of Stock trading volume",
+  #              subtitle = "(Visualization to check any obvious data issues)",
+  #              y = "Daily Trading Volume", x = " Date") + 
+  #         theme(
+  #           plot.title = element_text(hjust = 0, size = 10),    # Center title position and size
+  #           plot.subtitle = element_text(hjust = 0,size = 8),            # Center subtitle
+  #           plot.caption = element_text(hjust = 0, face = "italic")# move caption to the left
+  #         )+
+  #         facet_wrap(~name,scales="free",ncol=2) +
+  #         scale_y_continuous(labels = label_number(suffix = " M", scale = 1e-6)))
   
   print(ggplot(data = na.omit(df_bsi_all), aes(period,bsi_score)) +
           geom_line(color = "steelblue", size = 1) +
@@ -316,18 +322,18 @@ fn.data_diagnostics <- function(){
           )+
           facet_wrap(~name,scales="free",ncol=3) )
   
-  print( ggplot(na.omit(df_forex2), aes(period,value)) + 
-           geom_point() + 
-           stat_smooth(formula = y ~ x,method=loess) +
-           theme(
-             plot.title = element_text(hjust = 0, size = 10),    # Center title position and size
-             plot.subtitle = element_text(hjust = 0,size = 8),            # Center subtitle
-             plot.caption = element_text(hjust = 0, face = "italic")# move caption to the left
-           )+
-           facet_wrap(~variable,scales="free",ncol=1)+ 
-           labs(title = "Time Series of Exchange Rates",
-                subtitle = "(Visualization to check any obvious data issues)",
-                y = "Exchange Rates:$ vs YEN, EURO,Rupee", x = " Date"))
+  # print( ggplot(na.omit(df_forex2), aes(period,value)) + 
+  #          geom_point() + 
+  #          stat_smooth(formula = y ~ x,method=loess) +
+  #          theme(
+  #            plot.title = element_text(hjust = 0, size = 10),    # Center title position and size
+  #            plot.subtitle = element_text(hjust = 0,size = 8),            # Center subtitle
+  #            plot.caption = element_text(hjust = 0, face = "italic")# move caption to the left
+  #          )+
+  #          facet_wrap(~variable,scales="free",ncol=1)+ 
+  #          labs(title = "Time Series of Exchange Rates",
+  #               subtitle = "(Visualization to check any obvious data issues)",
+  #               y = "Exchange Rates:$ vs YEN, EURO,Rupee", x = " Date"))
 }
 
 
