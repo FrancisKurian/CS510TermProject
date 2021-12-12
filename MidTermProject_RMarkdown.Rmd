@@ -381,7 +381,7 @@ fn.data_diagnostics <- function(){
            facet_wrap(~variable,scales="free",ncol=1)+ 
            labs(title = "Time Series of Exchange Rates",
                 subtitle = "(Visualization to check any obvious data issues)",
-                y = "Exchange Rates:$ vs YEN, EURO,Rupee", x = " Date"))
+                y = "Exchange Rates:$ vs YEN, EURO,Rupee", x = "Date"))
 }
 
 ```
