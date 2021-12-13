@@ -17,22 +17,21 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Abstract
 
-Social networking sites and news feeds generate voluminous text information that could reveal market participant’s sentiments about a business. Quantifying such sentiments and understanding the relevance of such information on a company’s stock price is an area of interest for many researchers. Sentiment analysis, using extensive text mining, is technically challenging to build but services like IBM Watson Application Programming Interfaces (APIs) simplifies such tasks for researchers. This paper examines how stock price movements are correlated with the expressed public sentiments (quantified into a sentiment index leveraging Watson APIs) about certain companies. To achieve this goal, a tool that integrates relevant data sources and automates the analysis was developed in R.  A multiple regression model was employed to quantify the relationship between stock prices and sentiment index. In addition to the sentiment index, exchange rates were introduced as explanatory variables to capture the international exposure of the companies. Validation of the model on two listed companies in the United States demonstrate significant explanatory power of sentiments index and thus supports the hypothesis that sentiment analysis is a useful predictor of stock price movement.      
+Social networking sites and news feeds generate voluminous text information that reveal common sentiments about a business. Quantifying sentiments and understanding the relevance of such information on a company’s stock price has been an area of interest for many researchers. Sentiment analysis, using extensive text mining algorithms, is technically challenging to build but services like IBM Watson Application Programming Interfaces (APIs) simplify such tasks. This paper examines how stock price movements are correlated with the expressed public sentiments for a select number of companies. To achieve this goal, a tool that integrates relevant data sources and automates the analysis was developed using programming language R.  A multiple regression model was employed to quantify the relationship between stock prices and a sentiment index. In addition to the sentiment index, exchange rates were introduced as explanatory variables to capture the international exposure of the companies. Validation of the model on two listed companies in the United States stock exchanges demonstrate significant explanatory power of sentiments index and thus supports the hypothesis that sentiment analysis is a useful predictor of stock price movement.      
 
 ## Introduction 
 
 ### Sentiment Analysis and Stock Prices
 
-Behavioral economics tells us that emotions can profoundly affect individual behavior and decision-making. Does this also apply to societies at large, i.e. can societies experience mood states that affect their collective decision making? [@bollen:2011] Efficient Market Hypothesis implies that stock market prices incorporate the new information available to the market participants instantaneously. News feeds and social media interactions generate large volume of content in the form of product reviews, service levels, management decisions and many other relevant information that are sensitive to the stock prices. For example, many customers posting negative reviews about a product in social media could impact the product demand and future profitability of a company. News about supply chain bottlenecks for certain electronics parts could result in on time product availability in the market and result in sales target missed.
+Consumer behavior studies tell us that emotions can profoundly affect individual behavior and decision-making. Does this also apply to societies at large, i.e. can societies experience mood states that affect their collective decision making when it comes to pricing company stock?. [@bollen:2011] Efficient Market Hypothesis implies that stock market prices incorporate the new information available to the market participants instantaneously. News feeds and social media interactions generate large volume of content in the form of product reviews, service levels, management decisions and many other relevant information that are sensitive to the stock prices. For example, many customers posting negative reviews about a product in social media could impact the product demand and future profitability of a company. News about supply chain bottlenecks for certain electronics parts could signal future miss in in sales targets.
 
-News about political instability and changes in international business environments could impact the foreign exchange rates and affect the profitability of companies doing business with those nations. When news and social media are in a language other than English, introducing Exchange rate as a proxy to the model is one way to indirectly measure the sentiments. 
+It’s anticipated that sentiment analysis is relevant for understanding the stock price movement[@Pooja:2021]. Quantification of human sentiments expressed in text documents like news feed or social media interaction is a computationally intensive task.This is where Watson API services help to look at these voluminous documents to capture feelings, such as anger, sadness, joy, fear, hesitation etc. Sentiment is a higher-level classifier that divides the spectrum of emotions into positive, negative, and neutral. Once such classification is done it is possible to build an index to track the sentiments movement on a daily basis and analyse its sensitivity to stock prices. This system leverages on an index already built by TRaiCE Inc using Watson APIs and is available as a service. In following sections will discuss the methodology, data sources and the analysis results.
 
-It’s anticipated that sentiment analysis is relevant for understanding the stock price movement[@Pooja:2021]. Quantification of human sentiments expressed in text documents like news feed or social media interaction is a computationally intensive task.This is where Watson API services help to look at these voluminous documents to capture feelings, such as anger, sadness, joy, fear, hesitation etc. Sentiment is a higher-level classifier that divides the spectrum of emotions into positive, negative, and neutral. Once such classification is done it is possible to build an index to track the sentiments movement on a daily basis and analyse its sensitivity to stock prices. This system leverages on an index already built by TRaiCE Inc using Watson APIs and is available as a service. In following sections we will discuss the methodology, data sources and the analysis results.
- 
+News about political instability and changes in international business environments could impact the foreign exchange rates and affect the profitability of companies doing business with those nations. When news and social media interactions are in a language other than English, introducing exchange rate as a proxy to the model is one way to indirectly measure the sentiments. 
 
 ### Quantification of Stock Market Behavior using Sentiment Analysis  
 
-Several researchers empirically established the links between sentiments analysis and stock prices movements. Bollen et al. conducted a conclusive study using microblogs from twitter and established a causal relationship with sentiment score and Dow Jones Industrial Average. Seki et al. [@seki:2021]. Zhang et al.[@zhang:2021] analyzed news text to build a business sentiment index to use it as an economic index in predicting stock prices. Yahya et al.[@Yahya:2015] used a linear  regression approach incorporating sentiment analysis as an explanatory variable and concluded that introducing sentiment analysis provided significant lift in predicting the stock price movement. On similar lines, we developed a rudimentary regression-based analysis system to understand the stock price movement with respect business sentiment index (BSI). 
+Several researchers have empirically established the links between sentiments analysis and stock price movements. Bollen et al[@bollen:2011]. conducted a conclusive study using microblogs from twitter and established a causal relationship with sentiment score and Dow Jones Industrial Average. Seki et al. [@seki:2021]. Zhang et al.[@zhang:2021] analyzed news text to build a business sentiment index to use it as an economic index in predicting stock prices. Yahya et al.[@Yahya:2015] used a linear  regression approach incorporating sentiment analysis as an explanatory variable and concluded that introducing sentiment analysis provided significant lift in predicting the stock price movement. On similar lines, a  rudimentary regression-based analysis system was developed to understand the stock price movement with respect to business sentiment index (BSI). 
 
 ### Objectives
 This paper attempts to analyze stock price behavior of two companies-The Boeing and Kraft Heinz- listed in the US stock market with respect to changes in Business Sentiment index (BSI) . BSI quantifies the human feelings captured through the extensive text-based content from news feeds and social media interactions. In addition to BSI, foreign exchange rates are added as an additional explanatory variables. This is with the assumption that exchange rates are a better proxy when news and social media interactions are conducted using a language other than English. 
@@ -42,7 +41,7 @@ This paper attempts to analyze stock price behavior of two companies-The Boeing 
 
 
 ### Analysis System and Linear Regression Model
-An R based analysis system was developed to integrate stock prices, BSI and various exchange rates at company level. The design was in a such a way that analyst could make a function call with ticker symbol and produce data diagnostics and multiple regression analysis.  This study leverages on that system. 
+An R based analysis system was developed to integrate stock prices, BSI and various exchange rates at the company level. The design was in  such a way that analyst could make a function call with ticker symbol and produce data diagnostics and multiple regression analysis.  This study leverages on that system. 
 
 Ordinary Least Square Regression:
 
@@ -52,7 +51,7 @@ $X_{i}$ are the $k$ independent variables and $Y$ is a dependent variable, for e
 \end{equation}
 $\epsilon_{i}$ =Random Error Term
 
-The OLS model in this context is formulated as:
+The OLS model in this context can be specified as:
 
 \begin{equation}
 \large{StockPrice = \beta_{0   } + \beta_{1} BSI +  \beta_{2} USD.EUR +\beta_{3} USD.YEN +\beta_{4} USD.INR }
@@ -61,16 +60,16 @@ The OLS model in this context is formulated as:
 
 
 where: \
-$\mathbf{StockPrice}$ is Stock Price of the company;\
-$\mathbf{BSI}$ is Business Sentiment Index ;\
-$\mathbf{USD.EUR}$ is US Dollar vs Euro exchange rate; \
-$\mathbf{USD.YEN}$ is US Dollar vs Japanese Yen exchange rate;\
-$\mathbf{USD.INR}$ is US Dollar vs Indian Rupee exchange rate;\
+$\mathbf{StockPrice}$ is Stock Price of the company.\
+$\mathbf{BSI}$ is Business Sentiment Index.\
+$\mathbf{USD.EUR}$ is US Dollar vs Euro exchange rate. \
+$\mathbf{USD.YEN}$ is US Dollar vs Japanese Yen exchange rate.\
+$\mathbf{USD.INR}$ is US Dollar vs Indian Rupee exchange rate.\
 $\beta_{0}$ is the intercept, $\beta_{1}$,$\beta_{2}$,$\beta_{3}$,$\beta_{4}$ are the coefficients.
 
 ### Data Collection and Profiling
 
-Daily data was collected for a period of two years (01-SEP-2019 to 31-AUG-2021) for the following data series. Daily stock prices[@yahoo], Business sentiments index[@traice:2021] and foreign exchange rates[@fed].  The following graphs shows the data distribution for a select number of the companies including the ones we analyzed for the study. 
+Daily data was collected for a period of two years (01-SEP-2019 to 31-AUG-2021) for the following data series. Daily stock prices[@yahoo], Business sentiments index[@traice:2021] and foreign exchange rates[@fed].  The following graphs show the data distribution for a select number of the companies including the ones analyzed for the study. 
 
 ```{r fig1, echo=FALSE, warning=FALSE, message=FALSE, fig.width=7, fig.height=4}
 # # Loads required packages
@@ -92,7 +91,7 @@ fn.data_diagnostics()
 Overall, various time series data demonstrate volatility especially around the early 2020. This could be attributed to the Covid-19 uncertainties in the market at the time. BSI data clearly show some outliers that need a review and probably a correction. With these points noted, the data was used for the further analysis.  
 
 ### Research Data & Code: Open Science Compliance
-R code developed for data extraction and analysis and data sets used for this validation exercises are archived in a public github repository. Link is provided in the reference section.[@510github]  
+R code developed for data extraction and analysis and data sets used for this validation exercises are archived in a public github repository.Reproducible package can be downloaded using the link provided in the reference section.[@510github]  
 
 ## Model Validation and Analysis at Company Level
 ### The Boeing Company
@@ -115,21 +114,22 @@ knitr::include_graphics("figures/lm_khc.png")
 ```
 \newpage
 ## Summary of Analysis
-### The Boeing COmpany
-Boeing is an American multinational corporation that designs, manufactures, and sells airplanes and aviation equipment worldwide. The scatter plots of Boeing stock prices with respect to explanatory variables clearly shows a positive relationship with Business sentiments index(BSI) and USDxYEN exchange rates. The other two exchanges rates- USDxEUR and USDxINR show a negative relationship. 
+### The Boeing Company
+Boeing is an American multinational corporation that designs, manufactures, and sells airplanes and aviation equipment worldwide. The scatter plots of Boeing stock prices with respect to explanatory variables clearly show a positive relationship with Business Sentiments Index(BSI) and USDxYEN exchange rates. The other two exchanges rates- USDxEUR and USDxINR show a negative relationship. 
 
-Multiple regression results and analysis of variance are consistent with scatter plot diagrams. BSI is positively related to stock prices and the coefficient is significant at a 99% confidence interval. This means a unit increase in BSI will lead to 5.5 units increase in the stock prices and vice versa. Euro and Indian rupee exchange rates are negatively related to stock prices and again going by the t statistics, the relationship is significant at 99% confidence interval levels. One explanation is that high export exposure of Boeing to those regions and a weak foreign currency means higher revenue for the company in terms of dollars. Japanese Yen on the other hand is positively related probably because Japan as a large supplier of parts to the Boeing, it means expensive imports bills. 
+Multiple regression results and analysis of variance are consistent with scatter plot diagrams. BSI is positively related to stock prices and the coefficient is significant at a 99% confidence interval. This means a unit increase in BSI will lead to 5.5 units increase in the stock prices and vice versa. Euro and Indian Rupee exchange rates are negatively related to stock prices and the $\tau$ statistics is significant at 99% confidence interval levels. One explanation is that high export exposure of Boeing to those regions and a weak foreign currency means higher revenue for the company in terms of dollars.A stronger currency will mean more expensive exports. Japanese Yen on the other hand is positively related to stock prices. Japan's status as a large part supplier to Boeing means imports are favorably sensitive. 
 
-Residual analysis provides some more insights into how the random error term in in the equation is distributed. The regression equation R square is 84% which means 84% of the stock market price variance is explained by the predictor variables and it’s an excellent fit. So we could confirm that sentiments as expressed in news and social media interactions significantly impact the stock prices. 
+Residual analysis provides some more insights into how the random error term in in the equation is distributed. The regression equation $R^2$ square is 84% which means 84% of the stock market price variance is explained by the predictor variables and it’s a good fit. So it is evident that sentiments as expressed in news and social media text interactions significantly impact the stock prices. 
 
 ### Kraft Heinz Company
 The Kraft Heinz Company (KHC) is one of the largest food companies in North America. North America is the major market for Heinz products and primary source of raw materials. 
-Multiple regression results and analysis of variance shows BSI is positively related to stock prices and the coefficient is significant at a 99% confidence interval. Residual analysis shows some inconsistent pattern that require some additional review.   All exchange rates are positively related which probably is explained by the companies normalized global exposure. The regression equation R square is 85% which shows goodness of fit level. So we could confirm that a significant positive relationship exists between sentiment index and stock prices of Heinz.
+
+Similar to Boeing, coefficient signifcance was measured using $\tau test$. Multiple regression results and analysis of variance show BSI is positively related to stock prices and the coefficient is significant at a 99% confidence interval. Residual analysis shows some inconsistent pattern that require some additional review. All exchange rates are positively related which probably is explained by the company's normalized global exposure. The regression equation $R^2$ is 85% which shows a good fit. So there exists a significant positive relationship between sentiment index and stock prices of Heinz.
 
 ## Conclusion and Future Research
 
-Determinants of stock prices is a well-researched area. This paper primarily examined the sensitivity of stock prices with respect to a business sentiments index. The index quantifies human sentiments expressed in text documents like news feed or social media interaction about that company.  An R based analytical framework was developed for data extraction and analysis and then a validation was conducted for two listed companies – The Boeing and Kraft Heinz.  The results confirms that there is a significant positive relationship existing between stock prices and human sentiments. The data frequency used was daily so same day sensitivity was measured by the model.
-This insight can be incorporated into stock trading applications as an additional feature. However, this is  a rudimentary approach  and scope for improvement include i) refining the model to include lagged variables, additional features and testing the time series properties of the variables ii) addition of high frequency – intra day data iii) explore alternate machine learning methods other than regression.  
+Determinants of stock prices is a well-researched area. This paper primarily examined the sensitivity of company's stock price with respect to a business sentiments index. The index quantifies human sentiments expressed in text content generated by news feed or social media interaction about that company.  An R based analytical framework was developed for data extraction and analysis and subsequent validation was conducted for two listed companies – The Boeing and Kraft Heinz.  The results confirm that there is a significant positive relationship existing between stock prices and human sentiments. The data frequency used was daily so same day sensitivity was measured by the model.
+This insight can be incorporated into stock trading applications as an additional feature. However, this is a rudimentary approach and scope for improvement include i) refining the model to include lagged variables, additional features and testing the time series properties of the variables. ii) addition of high frequency intra-day data. iii) explore alternate machine learning methods other than the regression.  
 
 \newpage
 ## References 
